@@ -14,7 +14,7 @@ sudo python /home/pi/tyos/src/main.py --version
 VERSION = '0.5.4'
 
 #Set to True if you do not want the time modified off the FONA
-USE_RAW_TIME = False
+USE_RAW_TIME = TRUE
 
 import pygame, sys, os, time, datetime, traceback, warnings
 from pygame.locals import *
@@ -57,7 +57,7 @@ class tyos():
         self.WINDOWWIDTH = 320
         self.WINDOWHIEGHT = 480
         self.surface = pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHIEGHT), pygame.FULLSCREEN)
-        pygame.mouse.set_visible(False)
+        pygame.mouse.set_visible(TRUE)
 
         self.clock = pygame.time.Clock()
 
@@ -151,7 +151,7 @@ class tyos():
             if int(t[0] + t[1]) > 12:
                 t = str(int(t[0] + t[1]) - 12) + t[-3:]
 
-        t = t.lstrip('0')
+        #t = t.lstrip('0')
 
         self.clock_text = self.font.render(t, True, self.WHITE, self.BLACK)
         self.surface.blit(self.clock_text, self.images['rects'][1])

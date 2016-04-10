@@ -9,9 +9,9 @@ from pygame.locals import *
 
 class Toolbar():
     def __init__(self, fona):
-        self.UPDATE_TIME = 30
-        self.DEAD = 30
-        
+        self.UPDATE_TIME = 60
+        self.DEAD = 60
+
         #Setup fona
         self.fona = fona
 
@@ -23,7 +23,7 @@ class Toolbar():
 
         #Setup fonts
         self.font = pygame.font.Font('/home/pi/tyos/fonts/arial.ttf', 14)
-        
+
         #Setup Battery Persentage Text
         self.bat_left = self.font.render('..%', True, self.BLACK, self.WHITE)
         self.bat_left_rect = self.bat_left.get_rect()
@@ -35,14 +35,14 @@ class Toolbar():
 
         #Setup reception/battery clock
         self.last_update = time.time()
-        
+
     def rtc(self):
         #Get time from RTC on FONA
         self.rtc_time = self.fona.transmit('AT+CCLK?')
         self.rtc_time = self.rtc_time[1]
 
         #Parse string to include hours and seconds only
-        self.rtc_time = self.rtc_time.split(',') 
+        self.rtc_time = self.rtc_time.split(',')
         self.rtc_time = self.rtc_time[1]
         self.rtc_time = self.rtc_time.split('-')
         self.rtc_time = self.rtc_time[0]
@@ -65,7 +65,7 @@ class Toolbar():
             else:
                 self.raw_reception = self.raw_reception.replace(i, '', 1)
                 break
-            
+
         #Extract dbm
         for i in reversed(self.raw_reception):
             if i != ',':
@@ -73,7 +73,7 @@ class Toolbar():
             else:
                 self.raw_reception = self.raw_reception.replace(i, '', 1)
                 break
-        try: 
+        try:
             self.reception = int(self.raw_reception)
         except:
             self.reception = 0
@@ -90,7 +90,7 @@ class Toolbar():
             self.bars = 1
         else:
             self.bars = 0
-        
+
         #Reception Bar rects      x   y  w  h
         self.one =   pygame.Rect(10, y + 18, 5, 7)
         self.two =   pygame.Rect(23, y + 13, 5, 12)
@@ -117,7 +117,7 @@ class Toolbar():
         print 'RECEPTION: ' + str(self.reception) + 'dbm'
 
         return rects
-    
+
     def check_battery(self, text):
 
         #Get battery level from fona
@@ -131,14 +131,14 @@ class Toolbar():
             self.dead_bat = True
 
         text['surface'] = self.font.render(self.percentage + '%', True, self.BLACK, self.WHITE)
-        
+
         return text
 
     def clock(self, rects, text, update, y):
         if time.time() - self.last_update > self.UPDATE_TIME:
             print 'UPDATING...'
             self.last_update = time.time()
-            
+
             rects = self.check_reception(rects, y)
             text = self.check_battery(text)
             update = True

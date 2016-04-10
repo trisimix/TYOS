@@ -6,14 +6,14 @@ import serial, time
 
 class SerialPort():
     def __init__(self):
-       self.baud_rate = 9600
+       self.baud_rate = 38400
 
     def connect(self):
         #open connection
         self.serialport = serial.Serial("/dev/ttyAMA0", self.baud_rate, timeout=0.5)
         #Send test command
         self.serialport.write('AT\r')
-        #get reply 
+        #get reply
         reply = self.serialport.readlines()
         for i in range(len(reply)):
             reply[i] = reply[i].rstrip()
@@ -30,14 +30,14 @@ class SerialPort():
         for i in range(len(feed)):
             feed[i] = feed[i].rstrip()
         return feed
-    
+
     def check(self):
         self.model = self.transmit('ATI')
         print self.model
 
     def close(self):
         self.serialport.close()
-        
+
 if __name__ == '__main__':
     test = SerialPort()
     test.connect()

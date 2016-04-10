@@ -3,4 +3,5 @@ message
 app-list
 power
 camera
+FMRadio
 settings
