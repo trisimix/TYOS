@@ -211,7 +211,7 @@ class Run():
         self.fona.transmit('AT+FMFREQ=' + self.channels[self.ch_number - 1])
         self.signal = self.fona.transmit('AT+FMSIGNAL=' + self.channels[self.ch_number - 1])
         self.signal = self.signal[1].split(':')
-        print(self.signal)
+#        print(self.signal)
         self.signal_str = self.font.render(str(self.signal[2]) + ' / 112' , True, self.GREEN, self.WHITE)
         self.blit['surfaces'][6] = self.signal_str
 
