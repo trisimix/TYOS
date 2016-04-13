@@ -10,7 +10,7 @@ from pygame.locals import *
 class Toolbar():
     def __init__(self, fona):
         self.UPDATE_TIME = 60
-        self.DEAD = 20
+        self.DEAD = 60
 
         #Setup fona
         self.fona = fona
@@ -39,12 +39,15 @@ class Toolbar():
     def rtc(self):
         #Get time from RTC on FONA
         self.rtc_time = self.fona.transmit('AT+CCLK?')
+
         self.rtc_time = self.rtc_time[1]
 
         #Parse string to include hours and seconds only
         self.rtc_time = self.rtc_time.split(',')
         self.rtc_time = self.rtc_time[1]
         self.rtc_time = self.rtc_time.split('-')
+        self.rtc_time = self.rtc_time[0]
+        self.rtc_time = self.rtc_time.split('+')
         self.rtc_time = self.rtc_time[0]
 
         print self.rtc_time

@@ -108,19 +108,19 @@ class Run():
             self.exit = True
         if event.pos[0] > 0 and event.pos[0] < 40:
             if event.pos[1] > 206 and event.pos[1] < 244:
-                print 'Volume -'
+                #print 'Volume -'
                 self.volume_down()
         if event.pos[0] > 279 and event.pos[0] < 320:
             if event.pos[1] > 206 and event.pos[1] < 244:
-                print 'Volume +'
+                #print 'Volume +'
                 self.volume_up()
         if event.pos[0] > 0 and event.pos[0] < 40:
             if event.pos[1] > 303 and event.pos[1] < 342:
-                print 'Channel -'
+                #print 'Channel -'
                 self.channel_down()
         if event.pos[0] > 279 and event.pos[0] < 320:
             if event.pos[1] > 303 and event.pos[1] < 342:
-                print 'Channel +'
+                #print 'Channel +'
                 self.channel_up()
 
 
@@ -143,7 +143,7 @@ class Run():
         self.fona.transmit('AT+FMFREQ=' + self.set_freq)
         self.signal = self.fona.transmit('AT+FMSIGNAL=' + self.set_freq)
         self.signal = self.signal[1].split(':')
-        print(self.signal)
+        #print(self.signal)
         self.signal_str = self.font.render(str(self.signal[2]) + ' / 112' , True, self.GREEN, self.WHITE)
         self.blit['surfaces'][6] = self.signal_str
 
@@ -161,7 +161,7 @@ class Run():
         self.volume = self.volume - 1
         if self.volume < 0:
             self.volume = 0
-        print(self.volume)
+    #    print(self.volume)
         self.fona.transmit('AT+FMVOLUME=' + str(self.volume))
         time.sleep(0.5)
         self.vol = self.font.render(str(self.volume) , True, self.GREEN, self.WHITE)
@@ -171,7 +171,7 @@ class Run():
         self.volume = self.volume + 1
         if self.volume > 6:
             self.volume = 6
-        print(self.volume)
+        #print(self.volume)
         self.fona.transmit('AT+FMVOLUME=' + str(self.volume))
         time.sleep(0.5)
         self.vol = self.font.render(str(self.volume) , True, self.GREEN, self.WHITE)
@@ -192,7 +192,7 @@ class Run():
         self.fona.transmit('AT+FMFREQ=' + self.channels[self.ch_number - 1])
         self.signal = self.fona.transmit('AT+FMSIGNAL=' + self.channels[self.ch_number - 1])
         self.signal = self.signal[1].split(':')
-        print(self.signal)
+        #print(self.signal)
         self.signal_str = self.font.render(str(self.signal[2]) + ' / 112' , True, self.GREEN, self.WHITE)
         self.blit['surfaces'][6] = self.signal_str
 
@@ -220,13 +220,13 @@ class Run():
            self.set_radio()
         self.chlist = str(self.fona.transmit('AT+FMSCAN'))
         time.sleep(15)
-        print self.chlist
+        #print self.chlist
         ch_max = len(self.chlist)
-        print(ch_max)
+        #print(ch_max)
         if ch_max == 13:  # need it since it usually does not work the fist time when starting FMSCAN, alsways have to do it twice, dont ask me why
             self.chlist = str(self.fona.transmit('AT+FMSCAN'))
             time.sleep(15)
-            print self.chlist
+            #print self.chlist
             ch_max = len(self.chlist)
 
         self.chlist = self.chlist.replace('[','')
@@ -244,11 +244,11 @@ class Run():
         del(self.channels[0])
         del(self.channels[self.ch_max])
         del(self.channels[self.ch_max])
-        print('channels list:')
-        print(self.channels)
+        #print('channels list:')
+        #print(self.channels)
         self.ch_max = len(self.channels)
-        print('number of channels:')
-        print(self.ch_max)
+        #print('number of channels:')
+        #print(self.ch_max)
         self.no_of_ch = self.font.render(str(self.ch_max) , True, self.GREEN, self.WHITE)
         self.blit['surfaces'][4] = self.no_of_ch
 
