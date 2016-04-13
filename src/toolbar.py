@@ -10,7 +10,7 @@ from pygame.locals import *
 class Toolbar():
     def __init__(self, fona):
         self.UPDATE_TIME = 60
-        self.DEAD = 60
+        self.DEAD = 20
 
         #Setup fona
         self.fona = fona

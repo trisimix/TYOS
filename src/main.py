@@ -14,7 +14,7 @@ sudo python /home/pi/tyos/src/main.py --version
 VERSION = '0.5.4'
 
 #Set to True if you do not want the time modified off the FONA
-USE_RAW_TIME = True
+USE_RAW_TIME = False
 
 import pygame, sys, os, time, datetime, traceback, warnings
 from pygame.locals import *
@@ -56,8 +56,8 @@ class tyos():
         #Setup surface
         self.WINDOWWIDTH = 320
         self.WINDOWHIEGHT = 480
-        self.surface = pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHIEGHT))
-        #self.surface = pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHIEGHT), pygame.FULLSCREEN)
+        #self.surface = pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHIEGHT))
+        self.surface = pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHIEGHT), pygame.FULLSCREEN)
         pygame.mouse.set_visible(True)
 
         self.clock = pygame.time.Clock()
