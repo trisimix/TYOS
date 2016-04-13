@@ -39,24 +39,25 @@ class Run():
         self.rect.y = 158
 
         # Timeformat
-        self.get_time_mode()
         self.time_24hrs = self.font.render('24hrs', True, self.GREEN, self.WHITE)
         self.time_12hrs = self.font.render('12hrs', True, self.GREEN, self.WHITE)
         self.time_rect = self.off.get_rect()
         self.time_rect.centery = 318
         self.time_rect.x = 210
 
-        # Timezone
-        self.timezone = 0
-        self.tz_set = self.font.render(str(self.timezone), True, self.GREEN, self.WHITE)
-        self.tz_set_rect = self.tz_set.get_rect()
-        self.tz_set_rect.centery = 366
-        self.tz_set_rect.x = 210
+        #restart notice
+        self.boot_set = self.font.render( '', True, self.RED, self.WHITE)
+        self.boot_set_rect = self.boot_set.get_rect()
+        self.boot_set_rect.centery = 366
+        self.boot_set_rect.x = 55
 
         #Stuff to follow app protocol
         self.exit = False
         self.blit_one_surface = {'surface':[], 'rects':[]}
-        self.blit = {'surfaces':[self.menu, self.fona_power, self.off, self.time_24hrs], 'rects':[self.menu_rect, self.fona_power_rect, self.rect, self.time_rect]}
+        self.blit = {'surfaces':[self.menu, self.fona_power, self.off, self.time_24hrs, self.boot_set], 'rects':[self.menu_rect, self.fona_power_rect, self.rect, self.time_rect, self.boot_set_rect]}
+
+        #get timeformat
+        self.get_time_mode()
 
         #Set audio mode text
         if self.headset:
@@ -105,8 +106,10 @@ class Run():
 
         if self.mode == 0:
             self.timeformat = False
+            self.blit['surfaces'][3] = self.time_12hrs
         else:
             self.timeformat = True
+            self.blit['surfaces'][3] = self.time_24hrs
 
     def run_app(self):
         pass
@@ -120,12 +123,6 @@ class Run():
             print 'Vibration On Off'
         if event.pos[1] > 303 and event.pos[1] < 342:
             self.set_timeformat()
-#        if event.pos[0] > 0 and event.pos[0] < 40:
-#            if event.pos[1] > 347 and event.pos[1] < 384:
-#                self.timezone_down()
-#        if event.pos[0] > 279 and event.pos[0] < 320:
-#            if event.pos[1] > 347 and event.pos[1] < 384:
-#                self.timezone_up()
         if event.pos[1] > 444 and event.pos[1] < 476:
             self.exit = True
 
@@ -160,19 +157,5 @@ class Run():
         self.conf_file.write('#Timeformat config\n')
         self.conf_file.write(USE_RAW_TIME)
         self.conf_file.close()
-
-#    def timezone_down(self):
-#        if self.timezone < -11:
-#            self.timezone = 13
-#        self.timezone = self.timezone -1
-#        print(self.timezone)
-#        self.tz_set = self.font.render(str(self.timezone), True, self.GREEN, self.WHITE)
-#        self.blit['surfaces'][4] = self.tz_set
-
-#    def timezone_up(self):
-#        if self.timezone > 11:
-#            self.timezone = -13
-#        self.timezone = self.timezone +1
-#        print(self.timezone)
-#        self.tz_set = self.font.render(str(self.timezone), True, self.GREEN, self.WHITE)
-#        self.blit['surfaces'][4] = self.tz_set
+        self.boot_set = self.font.render( 'restart to apply', True, self.RED, self.WHITE)
+        self.blit['surfaces'][4] = self.boot_set

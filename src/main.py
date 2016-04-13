@@ -13,12 +13,38 @@ sudo python /home/pi/tyos/src/main.py --version
 '''
 VERSION = '0.5.4'
 
-#Set to True if you do not want the time modified off the FONA
-USE_RAW_TIME = False
-
 import pygame, sys, os, time, datetime, traceback, warnings
 from pygame.locals import *
 import framebuffer, toolbar, apps, serialport, receive
+#Set to True if you do not want the time modified off the FONA
+try: #See if config file exists
+    conf_file = open('/home/pi/tyos/configure/settings.conf', 'r')
+except:
+    if not os.path.exists('/home/pi/tyos/configure'):#If configure directory doesn't exist, create one
+        os.mkdir('/home/pi/tyos/configure')
+    conf_file = open('/home/pi/tyos/configure/settings.conf', 'w+')#Create config file and add some lines
+    conf_file.write('#Timeformat\n')
+    conf_file.write('time24hrs=1\n')
+    conf_file.close()
+
+conf_file = open('/home/pi/tyos/configure/settings.conf', 'r')
+file = conf_file.readlines()
+conf_file.close()
+for i in range(0, len(file)):#Parse file
+    if file[i][0] == '#':
+        pass
+        #Do Nothing. Line is comment
+    else:
+        file[i] = file[i].rstrip()
+        if 'time24hrs' in file[i]: #Extract audio mode: 1=Built in, 0=External
+            USE_RAW_TIME = file[i]
+
+USE_RAW_TIME = USE_RAW_TIME.split('=')
+USE_RAW_TIME = int(USE_RAW_TIME[1])
+
+#USE_RAW_TIME = 1
+
+
 
 class tyos():
     def __init__(self):
@@ -148,7 +174,7 @@ class tyos():
         #Convert to 12 hour time then blit it to surface
         t = time.strftime("%H:%M")
 
-        if USE_RAW_TIME == False:
+        if USE_RAW_TIME == 0:
             if int(t[0] + t[1]) > 12:
                 t = str(int(t[0] + t[1]) - 12) + t[-3:]
 
