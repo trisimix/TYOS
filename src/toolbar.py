@@ -34,7 +34,7 @@ class Toolbar():
         self.rtc()
 
         #Setup reception/battery clock
-        self.last_update = time.time()
+        self.last_update = time.time() - self.UPDATE_TIME -5
 
     def rtc(self):
         #Get time from RTC on FONA
