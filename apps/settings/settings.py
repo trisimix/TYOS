@@ -28,6 +28,14 @@ class Run():
         self.off = self.font.render('OFF', True, self.RED, self.WHITE)
         # fona info Text
         self.model = self.fona.transmit('ATI')
+        self.imei = self.fona.transmit('AT+GSN')
+        self.imei = self.imei[1].replace('[','')
+        #print(self.imei)
+        self.imei_show = self.font.render( 'IMEI: ' + str(self.imei), True, self.GREEN, self.WHITE)
+        self.imei_show_rect = self.imei_show.get_rect()
+        self.imei_show_rect.x = 5
+        self.imei_show_rect.centery = 270
+
 
         self.fona_power = self.font.render( str(self.model[1]), True, self.GREEN, self.WHITE)
         self.fona_power_rect = self.off.get_rect()
@@ -54,7 +62,7 @@ class Run():
         #Stuff to follow app protocol
         self.exit = False
         self.blit_one_surface = {'surface':[], 'rects':[]}
-        self.blit = {'surfaces':[self.menu, self.fona_power, self.off, self.time_24hrs, self.boot_set], 'rects':[self.menu_rect, self.fona_power_rect, self.rect, self.time_rect, self.boot_set_rect]}
+        self.blit = {'surfaces':[self.menu, self.fona_power, self.off, self.time_24hrs, self.boot_set, self.imei_show], 'rects':[self.menu_rect, self.fona_power_rect, self.rect, self.time_rect, self.boot_set_rect, self.imei_show_rect]}
 
         #get timeformat
         self.get_time_mode()
