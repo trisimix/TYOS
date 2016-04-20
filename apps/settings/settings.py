@@ -31,9 +31,9 @@ class Run():
         self.imei = self.fona.transmit('AT+GSN')
         self.imei = self.imei[1].replace('[','')
         #print(self.imei)
-        self.imei_show = self.font.render( 'IMEI: ' + str(self.imei), True, self.GREEN, self.WHITE)
+        self.imei_show = self.font.render( str(self.imei), True, self.GREEN, self.WHITE)
         self.imei_show_rect = self.imei_show.get_rect()
-        self.imei_show_rect.x = 5
+        self.imei_show_rect.x = 75
         self.imei_show_rect.centery = 270
 
 

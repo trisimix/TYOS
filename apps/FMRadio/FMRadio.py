@@ -43,6 +43,11 @@ class Run():
         self.freq_rect = self.freq.get_rect()
         self.freq_rect.centerx = 200
         self.freq_rect.y = 350
+        # overlay scanning
+        self.scanning = self.font.render('     scanning...     ' , True, self.RED, self.WHITE)
+        self.scanning_rect = self.scanning.get_rect()
+        self.scanning_rect.centerx = 160
+        self.scanning_rect.y = 255
         # set number of channels (after channel scan)
         self.no_of_ch = self.font.render(str(self.ch_max) , True, self.GREEN, self.WHITE)
         self.no_of_ch_rect = self.no_of_ch.get_rect()
@@ -132,14 +137,14 @@ class Run():
         self.blit['surfaces'][2] = self.off
         self.blit['surfaces'][3] = self.freq_off
         self.fona.transmit('AT+FMCLOSE')
-        time.sleep(0.5)
+        time.sleep(0.25)
         self.radio_on = False
      else:
         self.blit['surfaces'][2] = self.on
         self.blit['surfaces'][3] = self.freq
         self.radio_on = True
         self.fona.transmit('AT+FMOPEN=1')
-        time.sleep(0.5)
+        time.sleep(0.25)
         self.fona.transmit('AT+FMFREQ=' + self.set_freq)
         self.signal = self.fona.transmit('AT+FMSIGNAL=' + self.set_freq)
         self.signal = self.signal[1].split(':')
@@ -163,7 +168,7 @@ class Run():
             self.volume = 0
     #    print(self.volume)
         self.fona.transmit('AT+FMVOLUME=' + str(self.volume))
-        time.sleep(0.5)
+        time.sleep(0.25)
         self.vol = self.font.render(str(self.volume) , True, self.GREEN, self.WHITE)
         self.blit['surfaces'][5] = self.vol
 
@@ -173,7 +178,7 @@ class Run():
             self.volume = 6
         #print(self.volume)
         self.fona.transmit('AT+FMVOLUME=' + str(self.volume))
-        time.sleep(0.5)
+        time.sleep(0.25)
         self.vol = self.font.render(str(self.volume) , True, self.GREEN, self.WHITE)
         self.blit['surfaces'][5] = self.vol
 
@@ -215,7 +220,12 @@ class Run():
         self.signal_str = self.font.render(str(self.signal[2]) + ' / 112' , True, self.GREEN, self.WHITE)
         self.blit['surfaces'][6] = self.signal_str
 
+    def display_channels_scan(self):
+        self.blit['surfaces'][4] = self.scanning
+        self.blit['rects'][4] = self.scanning_rect
+
     def channel_scan(self):
+#        self.display_channels_scan() doesnt work cause screeen doesnt gets updated
         if self.radio_on == False: # checking if radio is on, otherwise it will crash if radio is off
            self.set_radio()
         self.chlist = str(self.fona.transmit('AT+FMSCAN'))
@@ -251,7 +261,7 @@ class Run():
         #print(self.ch_max)
         self.no_of_ch = self.font.render(str(self.ch_max) , True, self.GREEN, self.WHITE)
         self.blit['surfaces'][4] = self.no_of_ch
-
+        self.blit['rects'][4] = self.no_of_ch_rect
         #channel_log = open('/home/pi/tyos/logs/channel.log', 'w')
         #channel_log.write(str(channels))
         #channel_log.close()
