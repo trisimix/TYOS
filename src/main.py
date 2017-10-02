@@ -13,6 +13,7 @@ sudo python /home/pi/tyos/src/main.py --version
 '''
 VERSION = '0.5.4'
 
+import RPi.GPIO as GPIO
 import pygame, sys, os, time, datetime, traceback, warnings
 from pygame.locals import *
 import framebuffer, toolbar, apps, serialport, receive
@@ -47,6 +48,8 @@ USE_RAW_TIME = int(USE_RAW_TIME[1])
 
 
 class tyos():
+    pullup = GPIO.wait_for_edge(channel, GPIO_RISING)
+    pulldown = GPIO.wait_for_edge(channel, GPIO_RISING)
     def __init__(self):
         warnings.filterwarnings("ignore")
         for arg in sys.argv:
@@ -185,6 +188,12 @@ class tyos():
 
     def home(self):
         while True:
+            if pullup:
+                os.system('sudo sh -c \'echo "1" > /sys/class/backlight/soc\:backlight/brightness\'')
+            elif pulldown:
+                os.sytem('sudo sh -c \'echo "0" > /sys/class/backlight/soc\:backlight/brightness\'')
+
+            
             #handle events and clock
             self.blit_time()
             self.handle_events()
